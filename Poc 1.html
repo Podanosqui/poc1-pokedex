@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedéx Poda</title>
+</head>
+
+<body>
+	<h1>Pokedex Poda</h1>
+
+	<ul id="pokemonList"></ul>
+
+	<h2>Cadastrar Pokémon</h2>
+	<form id="pokemonForm">
+		<label for="pokemonName">Nome do Pokémon:</label>
+		<input type="text" id="pokemonName" required>
+
+		<label for="pokemonType">Tipo:</label>
+		<input type="text" id="pokemonType" required>
+
+		<button type="button" onclick="addPokemon()">Cadastrar</button>
+	</form>
+		
+
+	<script>
+
+	// Adicionando alguns exemplos:
+	const pokemons = [
+		{ id: 1, name: "Bulbasaur", type: "Grama/Tóxico" },
+		{ id: 2, name: "Charmander", type: "Fogo" },
+		{ id: 3, name: "Squirtle", type: "Água" }
+	];
+
+	//Exibir a lista de Pokémons:
+	function displayPokemonList() {
+		const listElement = document.getElementById("pokemonList");
+		listElement.innerHTML = ""; // Limpa a Lista - Perguntar como Funciona.
+
+		pokemons.forEach(pokemon => {
+			const listItem = document.createElement("li");
+			listItem.className = "pokemonItem";
+			listItem.innerHTML = `${pokemon.name} - ${pokemon.type} 
+				<button onclick="editPokemon(${pokemon.id})">Editar</button>
+				<button onclick="deletePokemon(${pokemon.id})">Excluir</button>`;
+			listElement.appendChild(listItem); // Perguntar como Funciona.
+		});
+	}
+
+	// Cadastrar um novo Pokémon
+	function addPokemon() {
+		const name = document.getElementById("pokemonName").value;
+		const type = document.getElementById("pokemonType").value;
+
+		const newPokemon = {
+			id: pokemons.length + 1,
+			name: name,
+			type: type
+		};
+
+		pokemons.push(newPokemon);
+		displayPokemonList();
+		clearForm();
+	};
+
+	// Limpar o formulário
+	function clearForm() {
+		document.getElementById("pokemonName").value = "";
+		document.getElementById("pokemonType").value = "";
+	}
+
+	// Editar um Pokémon
+	function editPokemon(id) {
+		const editedPokemon = prompt("Editar Nome", "Novo Nome");
+
+		if (editedPokemon !== null) {
+			const index = pokemons.findIndex(pokemon => pokemon.id === id);
+			if (index !== -1) {
+				pokemons[index].name = editedPokemon;
+				displayPokemonList();
+			}
+		}
+	}
+
+	// Excluir Pokémon
+	function deletePokemon(id) {
+		const confirmDelete = confirm("Tem certeza que deseja excluir este Pokémon?");
+		if (confirmDelete) {
+			const index = pokemons.findIndex(pokemon => pokemon.id === id);
+			if (index !== -1) {
+				pokemons.splice(index, 1);
+				displayPokemonList();
+			}
+		}
+	}
+
+	// Exibir lista de Pokémons
+	displayPokemonList();
+
+	</script>
+
+</body>
+</html>
